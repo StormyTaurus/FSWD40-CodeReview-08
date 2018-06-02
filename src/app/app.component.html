@@ -1,20 +1,119 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAyNTAgMjUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNTAgMjUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojREQwMDMxO30NCgkuc3Qxe2ZpbGw6I0MzMDAyRjt9DQoJLnN0MntmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTI1LDMwIDEyNSwzMCAxMjUsMzAgMzEuOSw2My4yIDQ2LjEsMTg2LjMgMTI1LDIzMCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAJIi8+DQoJPHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xMjUsNTIuMUw2Ni44LDE4Mi42aDBoMjEuN2gwbDExLjctMjkuMmg0OS40bDExLjcsMjkuMmgwaDIxLjdoMEwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMQ0KCQlMMTI1LDUyLjF6IE0xNDIsMTM1LjRIMTA4bDE3LTQwLjlMMTQyLDEzNS40eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://blog.angular.io//">Angular blog</a></h2>
-  </li>
-</ul>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <title>CodeFactory</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2 style="color: white">Daters Contacts</h2>
+        <navbar></navbar>
+        <hero></hero>
+        <div *ngIf="appState == 'extend'">
+            <div class="row">
+                <div class="col-lg-2">
+                    <button class="btn btn-danger" (click)="changeState('default')">close</button>
+                </div>
+                <div class="col-lg-8">
+                    <div *ngFor="let Daters of userData">
+                        <div class="well" *ngIf="Daters.$key == activeKey">
+                            {{Daters.about}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="appState == 'default'" class="row">
+            <div class="col-lg-12">
+                <label>Filter gender
+              <select (change)="filtergender(filteredgender.value)" #filteredgender>
+                <option value="0">Select</option>
+                <option *ngFor="let gender of genderData" value="{{gender.name}}">
+                  {{gender.name}}
+                </option>
+              </select>
+            </label>
+            </div>
+        </div>
+
+        <div *ngIf="appState == 'default'" class="row">
+            <div class="col-lg-12">
+                <button class="btn btn-danger" (click)="changeState('add')">Add new Daters</button><br><br>
+            </div>
+        </div>
+        <div *ngIf="appState == 'add'">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Add new Daters</div>
+                <div class="panel-body">
+                    <form (submit)="addDaters(name.value,gender.value,about.value)">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="name">name:</label>
+                                    <input type="text" class="form-control" #name>
+                                </div>
+                                <label for="sel1">Select list (select one):</label>
+                                <select class="form-control" #gender>
+                      <option class="form-control" value="0">Select</option>
+                      <option class="form-control" *ngFor="let gender of genderData" value="{{gender.name}}">
+                        {{gender.name}}
+                      </option>
+                    </select>
+                                <div class="form-group">
+                                    <label for="about">about:</label>
+                                    <input type="text" class="form-control" #about>
+                                </div>
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+        <table class="table table-striped">
+            <!--
+          <thead>
+                <tr>
+                    <th>picture</th>
+                  <th>name</th>
+                  <th>surname</th>
+                    <th>about</th>
+                    <th>age</th>
+                    <th>gender</th>
+
+                </tr>
+            </thead>
+          -->
+          <div class="col-md-8 col-md-offset-2 text-center">
+            <tbody class="col-md-12">
+                <tr class="col-md-12" style="margin-bottom: 2em;"  *ngFor="let Daters of userData">
+                    <td class="m-5 well"><img  src="{{Daters.picture}}"></td>
+                  <td class="well" style="width:20em;"><p>Name: {{Daters.name}}<br></p>
+                  <p>Surname: {{Daters.surname}}<br></p>
+                    <!--<p>{{Daters.about}}</p>-->
+                    <p>Age: {{Daters.age}}<br></p>
+                    <p>Gender: {{Daters.gender}}</p>
+                    </td>
+                    <td class="well">
+                        <button (click)="changeState('extend', Daters.$key)" class="btn btn-info">About</button>
+                        <button (click)="deleteItem(Daters.$key)" class="btn btn-warning">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+          </div>
+        </table>
+        </div>
+
+
+
+    </div>
+</body>
+
+</html>
